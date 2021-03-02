@@ -1,0 +1,31 @@
+.login-header {
+    text-align: center;
+    display: block;
+    padding: .3rem;
+    padding-bottom: .3rem;
+    background-color: #97CAEB;
+    margin: auto;
+    color: #303030;
+    justify-content: center;
+}
+
+.login-form{
+    text-align: center;
+    background-color: aliceblue;
+    padding: 0;
+    color: #303030;
+    justify-content: center;
+    margin: auto;
+    
+}
+
+.login-form input {
+    width: 40%;
+    margin: auto;
+}
+
+.login-btn {
+    margin-bottom: .6rem;
+    padding-left: 2.3rem ;
+    padding-right: 2.3rem ;
+}

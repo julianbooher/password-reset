@@ -1,0 +1,18 @@
+.formContainer {
+    background-color: aliceblue;
+    padding: 0;
+}
+
+.headerRow {
+    text-align: center;
+    background-color: #97CAEB;
+    width: 100%;
+    height: 100%;
+    padding: 30px;
+    margin-bottom: 0;
+}
+
+.form {
+    background-color: #97CAEB;
+    padding: 10px;
+}

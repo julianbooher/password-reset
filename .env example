@@ -1,0 +1,3 @@
+SERVER_SESSION_SECRET=yourpasswordhere
+MAIL_USERNAME = your_outllok_account@outllok.com
+MAIL_PASSWORD = your_outlook_account_password

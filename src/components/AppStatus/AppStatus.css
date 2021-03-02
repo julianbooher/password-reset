@@ -1,0 +1,19 @@
+.appStatus {
+    margin: auto;
+    width: 50%;
+    border: 3px solid #97CAEB;
+    padding: 60px;
+    text-align: center;
+    margin-bottom: 230px;
+    margin-top: 75px;
+}
+
+.appStatus h2 {
+    font-family: 'Gotham Book';
+    color: #303030;
+}
+
+.appStatus p {
+    font-family: 'Gotham Bold';
+    color: #303030;
+}

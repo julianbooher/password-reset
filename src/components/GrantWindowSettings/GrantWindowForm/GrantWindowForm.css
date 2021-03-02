@@ -1,0 +1,20 @@
+.date-pickers{
+    text-align: center;
+    display: inline-flex !important;
+}
+
+.date-pickers input {
+    margin: 1em;
+}
+.budget{
+    margin-top: 2em;
+    text-align: center;
+}
+
+.grant-window-form{
+    text-align:center
+}
+
+#submit-button{
+    margin-top: 2em;
+}
