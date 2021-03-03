@@ -15,7 +15,9 @@ CREATE TABLE "user" (
   "phone" VARCHAR (25),
   "contact_name" VARCHAR (150),
   "admin" boolean DEFAULT false,
-  "remax_employee" boolean DEFAULT false
+  "remax_employee" boolean DEFAULT false,
+  "password_reset_token" VARCHAR(120),
+  "password_reset_timer" BIGINT
 
 );
 

@@ -23,11 +23,18 @@ router.post('/email/:username', (req, res) => {
     // Get the username from the route parameters.
     const { username } = req.params;
 
+    const token = crypto.randomBytes(20).toString('hex');
+    const timer = Date.now() + 3600000
+
     // Query to get information from the DB to be used for the URL in the email.
-    const queryText = `SELECT id, username, contact_name, password FROM "user" WHERE username = $1;`
+    const queryText = `UPDATE "user"
+    SET password_reset_token = $1, 
+    password_reset_timer = $2
+    WHERE username = $3
+    RETURNING id, username, contact_name, password;`
     
     pool
-    .query(queryText, [username])
+    .query(queryText, [token, timer, username])
     .then((result) =>{
 
         const {id, username, password, contact_name} = result.rows[0]
@@ -37,7 +44,12 @@ router.post('/email/:username', (req, res) => {
             to: username,
             subject: 'Password Reset',
             text: 'Password Reset Test',
-            html: `<p>Dear ${contact_name},</p><p>Password Reset Test</p><p>Thanks,</p><p>The Results Foundation</p>`
+            html: `<p>Dear ${contact_name},</p>
+            <p>A password reset has been requested for this account. If you did not request this, feel free to ignore this email. </p>
+            <p>To update your password, within an hour of receiving this email, follow this link and complete the form:</p>
+            <p></p>
+            <p>Thanks,</p>
+            <p>The Results Foundation</p>`
         }
 
         transporter.sendMail(mailData, (error, info) => {
