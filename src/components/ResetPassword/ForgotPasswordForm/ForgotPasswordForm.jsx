@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import './ForgotPasswordForm.css'
-import {Container, Col, Row, Form, Button} from 'react-bootstrap';
+import {Container, Col, Row, Form, Button, Alert} from 'react-bootstrap';
 
 
 export default function LoginForm() {
@@ -9,6 +9,7 @@ export default function LoginForm() {
   const [username, setUsername] = useState('');
 
   const resetMessage = useSelector(state => state.errors.resetMessage);
+  const successMessage = useSelector(state => state.successMessages.resetSuccessMessage);
 
   const reset = (event) => {
     event.preventDefault();
@@ -20,6 +21,7 @@ export default function LoginForm() {
           username: username,
         },
       });
+      setUsername('');
     } 
   }; // end login
 
@@ -31,9 +33,12 @@ export default function LoginForm() {
         </Row>
         <Form className="send-reset-form" onSubmit={event => {reset(event)}}>
           {resetMessage && (
-            <h3 style={{marginTop: 0}} className="alert" role="alert">
+            <Alert style={{marginTop: 0}} variant="danger">
               {resetMessage}
-            </h3>
+            </Alert>
+          )}
+          {successMessage &&(
+            <Alert variant="primary">{successMessage}</Alert>
           )}
           <Form.Group>
             <Form.Label htmlFor="username">
