@@ -2,6 +2,7 @@ const express = require('express');
 const pool = require('../modules/pool');
 const router = express.Router();
 const { rejectUnauthenticated } = require('../modules/authentication-middleware');
+const crypto = require('crypto');
 const nodemailer = require('nodemailer');
 
 
@@ -18,7 +19,7 @@ const transporter = nodemailer.createTransport( {
     }
 });
 
-router.post('/email/:username', rejectUnauthenticated, (req, res) => {
+router.post('/email/:username', (req, res) => {
     // Get the username from the route parameters.
     const { username } = req.params;
 
@@ -33,10 +34,10 @@ router.post('/email/:username', rejectUnauthenticated, (req, res) => {
 
         const mailData = {
             from: process.env.MAIL_USERNAME,
-            to: req.user.username,
-            subject: 'Thank You for your Application',
-            text: 'Thank you for your application to the Results Foundation. Your application has been succesfully recieved. We are excited to review your application and we appreciate that you have taken the time to apply. We will contact you about next steps.',
-            html: `<p>Dear ${contact_name},</p><p>Thank you for your application to the Results Foundation. The application for ${org_name} has been succesfully recieved.</p> We are excited to review your application and we appreciate that you have taken the time to apply.</p> <p>We will contact you about next steps.</p><p>Thanks,</p><p>The Results Foundation</p>`
+            to: username,
+            subject: 'Password Reset',
+            text: 'Password Reset Test',
+            html: `<p>Dear ${contact_name},</p><p>Password Reset Test</p><p>Thanks,</p><p>The Results Foundation</p>`
         }
 
         transporter.sendMail(mailData, (error, info) => {

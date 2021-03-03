@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import './LoginForm.css'
-import {Container, Col, Row, Form, Button} from 'react-bootstrap';
+import {Container, Col, Row, Form, Button, Alert} from 'react-bootstrap';
 
 
 export default function LoginForm() {
@@ -35,9 +35,9 @@ export default function LoginForm() {
         </Row>
         <Form className="login-form" onSubmit={event => {login(event)}}>
           {loginMessage && (
-            <h3 style={{marginTop: 0}} className="alert" role="alert">
+            <Alert style={{marginTop: 0}} variant="danger">
               {loginMessage}
-            </h3>
+            </Alert>
           )}
           <Form.Group>
             <Form.Label htmlFor="username">

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import './RegisterFormCE.css'
-import {Form, Container, Button} from 'react-bootstrap';
+import {Form, Container, Button, Alert} from 'react-bootstrap';
 
 export default function RegisterForm() {
   const dispatch = useDispatch();
@@ -56,9 +56,9 @@ export default function RegisterForm() {
       <Form className="register-form" onSubmit={event => {registerUser(event)}}>
         <h2>Register Community Engagement Profile</h2>
           {registrationMessage && (
-          <h3 className="alert" role="alert">
+          <Alert variant="danger">
             {registrationMessage}
-          </h3>
+          </Alert>
         )}
         <Form.Group>
           <Form.Label htmlFor="username">
