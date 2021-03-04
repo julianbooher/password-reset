@@ -27,6 +27,7 @@ import AppDetailsCE from '../CommunityEngagement/AppDetailsCE/AppDetailsCE.jsx';
 import PrintableReportCE from '../CommunityEngagement/PrintableReportCE/PrintableReportCE.jsx';
 import PreviousApplications from '../PreviousApplications/PreviousApplications.jsx'
 import ForgotPasswordPage from '../ResetPassword/ForgotPasswordPage/ForgotPasswordPage.jsx';
+import ResetPasswordPage from '../ResetPassword/ResetPasswordPage/ResetPasswordPage'
 
 
 import './App.css';
@@ -102,6 +103,17 @@ class App extends Component {
               exact
               path="/forgotpassword"
               component={ForgotPasswordPage}
+              authRedirect="/user"
+              adminRedirect="/admin"
+            />
+            <ProtectedRoute
+              // with authRedirect:
+              // - if logged in, redirects to "/user"
+              // - if admin, redirect to "/admin"
+              // - else shows LoginPage at /login
+              exact
+              path="/resetpassword/:userid/:token"
+              component={ResetPasswordPage}
               authRedirect="/user"
               adminRedirect="/admin"
             />
