@@ -46,11 +46,21 @@ function* fetchResetInfo(action){
   }
 }
 
+function* resetPassword(action){
+  try{
+    yield axios.put(`/api/reset/`, action.payload);
+  }
+  catch(error){
+    console.log('sendReset saga failed reset.saga.js', error);
+  }
+}
+
 //--------------------WATCHER SAGA---------------------------//
 function* resetSaga() {
   yield takeLatest('SEND_RESET', sendReset);
   yield takeLatest('SEND_RESET_EMAIL', sendResetEmail);
   yield takeLatest('FETCH_PASSWORD_RESET_INFO', fetchResetInfo);
+  yield takeLatest('SEND_FINAL_RESET', resetPassword);
 }
   
   export default resetSaga;

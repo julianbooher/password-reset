@@ -45,6 +45,8 @@ const resetMessage = (state = '', action) => {
       return '';
     case 'EMAIL_DOES_NOT_EXIST':
       return 'The email you have entered does not exist, have you registered an account?';
+    case 'RESET_PASSWORD_DOES_NOT_MATCH':
+      return 'Password does not match Password Confirmation!'
     default:
       return state;
   }

@@ -4,7 +4,8 @@ import './ResetPasswordForm.css'
 import {Container, Col, Row, Form, Button, Alert} from 'react-bootstrap';
 
 
-export default function LoginForm() {
+export default function LoginForm(props) {
+
   const dispatch = useDispatch();
   const [password, setPassword] = useState('');
   const [passwordConfirm, setPasswordConfirm] = useState('');
@@ -12,18 +13,25 @@ export default function LoginForm() {
   const resetMessage = useSelector(state => state.errors.resetMessage);
   const successMessage = useSelector(state => state.successMessages.resetSuccessMessage);
 
+  const {token, id} = props;
+
   const reset = (event) => {
     event.preventDefault();
 
-    if (username) {
+    if (password === passwordConfirm) {
       dispatch({
-        type: 'SEND_RESET',
+        type: 'SEND_FINAL_RESET',
         payload: {
-          username: username,
+          password: password,
+          token: token,
+          id: id
         },
       });
-      setUsername('');
-    } 
+    } else {
+      dispatch({
+        type: 'RESET_PASSWORD_DOES_NOT_MATCH',
+      })
+    }
   }; // end login
 
     return (

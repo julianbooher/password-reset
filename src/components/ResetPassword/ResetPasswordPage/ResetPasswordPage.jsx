@@ -31,10 +31,23 @@ export default function LoginPage() {
         </center>
       }
       {resetPasswordInfo === 'expired' &&
-        <h2>Expired test</h2>
+        <center>
+          <h2>Expired Link</h2>
+          <p>This link has expired, if you would like to send another, follow the link below.</p>
+          <Button
+            className="btn login-btn" 
+            variant= 'primary'
+            type="button"
+            onClick={() => {
+              history.push('/forgotpassword');
+            }}
+          >
+            Reset Password
+          </Button>
+        </center>
       }
       {resetPasswordInfo === 'checked' &&
-        <ResetPasswordForm />
+        <ResetPasswordForm token={token} id={id} />
       }
 
       <center style={{paddingTop: '10px'}}>
@@ -58,7 +71,7 @@ export default function LoginPage() {
             history.push('/login');
           }}
         >
-          Reset Password
+          Login
         </Button>
       </center>
     </div>
