@@ -1,41 +1,66 @@
-import React from 'react';
-import { useHistory } from 'react-router-dom';
-import ForgotPasswordForm from '../ForgotPasswordForm/ForgotPasswordForm.jsx';
-import { Button } from 'react-bootstrap';
+import React, { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import './ResetPasswordForm.css'
+import {Container, Col, Row, Form, Button, Alert} from 'react-bootstrap';
 
 
-export default function LoginPage() {
+export default function LoginForm() {
+  const dispatch = useDispatch();
+  const [username, setUsername] = useState('');
 
-  const history = useHistory();
+  const resetMessage = useSelector(state => state.errors.resetMessage);
+  const successMessage = useSelector(state => state.successMessages.resetSuccessMessage);
 
-  return (
-    <div style={{padding: '66px'}}>
-      <ForgotPasswordForm />
+  const reset = (event) => {
+    event.preventDefault();
 
-      <center style={{paddingTop: '10px'}}>
-        <p>Not registered?</p>
-        <Button
-          className="btn login-btn" 
-          variant= 'primary'
-          type="button"
-          onClick={() => {
-            history.push('/registration');
-          }}
-        >
-          Register
-        </Button>
-        <p>Remember your password?</p>
-        <Button
-          className="btn login-btn" 
-          variant= 'primary'
-          type="button"
-          onClick={() => {
-            history.push('/login');
-          }}
-        >
-          Reset Password
-        </Button>
-      </center>
-    </div>
-  );
+    if (username) {
+      dispatch({
+        type: 'SEND_RESET',
+        payload: {
+          username: username,
+        },
+      });
+      setUsername('');
+    } 
+  }; // end login
+
+    return (
+      <Container>
+        <Col>
+        <Row className="send-reset-header">
+          <h2>Reset Your Password</h2>
+        </Row>
+        <Form className="send-reset-form" onSubmit={event => {reset(event)}}>
+          {resetMessage && (
+            <Alert style={{marginTop: 0}} variant="danger">
+              {resetMessage}
+            </Alert>
+          )}
+          {successMessage &&(
+            <Alert variant="primary">{successMessage}</Alert>
+          )}
+          <Form.Group>
+            <Form.Label htmlFor="username">
+              Please enter your Email:
+            </Form.Label>
+              <Form.Control
+                type="text"
+                name="username"
+                required
+                value={username}
+                onChange={event => setUsername(event.target.value)}
+              />
+          </Form.Group>
+          <Button 
+            className="btn send-reset-btn" 
+            type="submit" 
+            name="submit" 
+          >
+            Reset Password
+          </Button>
+        </Form>
+        </Col>
+      </Container>
+    );
 }

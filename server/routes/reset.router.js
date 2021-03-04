@@ -31,13 +31,13 @@ router.post('/email/:username', (req, res) => {
     SET password_reset_token = $1, 
     password_reset_timer = $2
     WHERE username = $3
-    RETURNING id, username, contact_name, password;`
+    RETURNING id, username, contact_name;`
     
     pool
     .query(queryText, [token, timer, username])
     .then((result) =>{
 
-        const {id, username, password, contact_name} = result.rows[0]
+        const {id, username, contact_name} = result.rows[0]
 
         const mailData = {
             from: process.env.MAIL_USERNAME,
@@ -47,7 +47,7 @@ router.post('/email/:username', (req, res) => {
             html: `<p>Dear ${contact_name},</p>
             <p>A password reset has been requested for this account. If you did not request this, feel free to ignore this email. </p>
             <p>To update your password, within an hour of receiving this email, follow this link and complete the form:</p>
-            <p></p>
+            <p><a href="http://localhost:3000/#/resetpassword/${id}/${token}">Reset Your Password!</a></p>
             <p>Thanks,</p>
             <p>The Results Foundation</p>`
         }
