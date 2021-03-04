@@ -22,6 +22,7 @@ import allCeQuestion from './allCeQuestion.reducer';
 import {filterValue, filterColumn, highBudget, lowBudget} from './filter.reducer';
 import previousApplications from './previousApplications.reducer'
 import successMessages from './successMessages.reducer';
+import resetPassword from './resetPassword.reducer';
 
 
 const rootReducer = combineReducers({
@@ -51,6 +52,7 @@ const rootReducer = combineReducers({
   lowBudget,
   previousApplications,
   successMessages,
+  resetPassword,
 });
 
 export default rootReducer;

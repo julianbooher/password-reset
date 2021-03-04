@@ -19,6 +19,25 @@ const transporter = nodemailer.createTransport( {
     }
 });
 
+// GET route to check that the link from the reset password email is still valid.
+router.get('/check', (req, res) => { 
+    // get user id and auth token from the client params
+    const {id, token} = req.query;
+    // get timestamp to check against timer in database.
+    const timestamp = Date.now();
+
+    console.log('id', id);
+    console.log('token', token)
+    console.log('timestamp', timestamp)
+    const sqlText = `SELECT username FROM "user" WHERE id=$1 AND password_reset_token=$2 AND password_reset_timer > $3 `;
+    pool.query(sqlText, [id, token, timestamp]).then(result => {
+        console.log(result.rows)
+        res.send(result.rows); // sending back application questions
+    }).catch((error) => {
+        console.log('error checking password reset credentials in the server', error);
+    });
+  });
+
 router.post('/email/:username', (req, res) => {
     // Get the username from the route parameters.
     const { username } = req.params;
@@ -63,7 +82,8 @@ router.post('/email/:username', (req, res) => {
         console.log('User registration failed: ', err);
         res.sendStatus(500);
     });
-    
 })
+
+
 
 module.exports = router;

@@ -29,10 +29,28 @@ function* sendResetEmail(action){
   }
 }
 
+function* fetchResetInfo(action){
+  try{
+    const {id, token} = action.payload
+    const check = yield axios.get(`/api/reset/check?id=${id}&token=${token}`);
+    // TODO conditional for result of the check.
+    if (check.data.length > 0){
+      yield put({type: 'CORRECT_RESET_PASSWORD_INFO'})
+    }
+    else{
+      yield put({type: 'EXPIRED_RESET_PASSWORD_INFO'})
+    }
+  }
+  catch(error){
+    console.log('fetchResetInfo saga failed reset.saga.js', error);
+  }
+}
+
 //--------------------WATCHER SAGA---------------------------//
 function* resetSaga() {
   yield takeLatest('SEND_RESET', sendReset);
   yield takeLatest('SEND_RESET_EMAIL', sendResetEmail);
+  yield takeLatest('FETCH_PASSWORD_RESET_INFO', fetchResetInfo);
 }
   
   export default resetSaga;
