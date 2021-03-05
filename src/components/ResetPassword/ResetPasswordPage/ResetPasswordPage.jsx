@@ -47,7 +47,7 @@ export default function LoginPage() {
         </center>
       }
       {resetPasswordInfo === 'checked' &&
-        <ResetPasswordForm token={token} id={id} />
+        <ResetPasswordForm token={token} id={userid} />
       }
 
       <center style={{paddingTop: '10px'}}>

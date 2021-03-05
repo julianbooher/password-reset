@@ -20,7 +20,7 @@ function* sendReset(action){
 
 function* sendResetEmail(action){
   try{
-    yield axios.post(`/api/reset/email/${action.payload.username}`);
+    yield axios.put(`/api/reset/email/${action.payload.username}`);
     yield put ({type: 'CLEAR_RESET_ERROR'})
     yield put ({type: 'EMAIL_SENT'})
   }
