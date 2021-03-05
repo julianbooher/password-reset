@@ -1,7 +1,7 @@
 const express = require('express');
 const pool = require('../modules/pool');
 const router = express.Router();
-const { rejectUnauthenticated } = require('../modules/authentication-middleware');
+const encryptLib = require('../modules/encryption');
 const crypto = require('crypto');
 const nodemailer = require('nodemailer');
 
@@ -19,7 +19,54 @@ const transporter = nodemailer.createTransport( {
     }
 });
 
-router.post('/email/:username', (req, res) => {
+// GET route to check that the link from the reset password email is still valid.
+router.get('/check', (req, res) => { 
+    // get user id and auth token from the client params
+    const {id, token} = req.query;
+    // get timestamp to check against timer in database.
+    const timestamp = Date.now();
+    
+    // Check to ensure that the token in the DB still matches the token from the link, and that the timer hasn't expired.
+    const sqlText = `SELECT username FROM "user" WHERE id=$1 AND password_reset_token=$2 AND password_reset_timer > $3 `;
+    pool.query(sqlText, [id, token, timestamp]).then(result => {
+        console.log(result.rows)
+        res.send(result.rows); // sending back application questions
+    }).catch((error) => {
+        console.log('error checking password reset credentials in the server', error);
+    });
+  });
+
+router.put('/', (req, res) => {
+
+    // Get the username from the route parameters.
+    const { token, id } = req.body;
+    const password = encryptLib.encryptPassword(req.body.password);
+
+    // get timestamp to check against timer in database.
+    const timestamp = Date.now();
+
+    // Query to get information from the DB to be used for the URL in the email.
+    const queryText = `UPDATE "user"
+    SET password_reset_token = null, 
+    password_reset_timer = null,
+    password = $1
+    WHERE "user".id = $2
+    AND password_reset_token = $3
+    AND password_reset_timer > $4
+    ;`
+    
+    pool
+    .query(queryText, [password, id, token, timestamp])
+    .then((result) =>{
+        res.sendStatus(200);
+    })
+    .catch((err) => {
+        console.log('User registration failed: ', err);
+        res.sendStatus(500);
+    });
+})
+
+router.put('/email/:username', (req, res) => {
     // Get the username from the route parameters.
     const { username } = req.params;
 
@@ -63,7 +110,8 @@ router.post('/email/:username', (req, res) => {
         console.log('User registration failed: ', err);
         res.sendStatus(500);
     });
-    
 })
+
+
 
 module.exports = router;

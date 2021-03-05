@@ -20,7 +20,7 @@ function* sendReset(action){
 
 function* sendResetEmail(action){
   try{
-    yield axios.post(`/api/reset/email/${action.payload.username}`);
+    yield axios.put(`/api/reset/email/${action.payload.username}`);
     yield put ({type: 'CLEAR_RESET_ERROR'})
     yield put ({type: 'EMAIL_SENT'})
   }
@@ -29,10 +29,38 @@ function* sendResetEmail(action){
   }
 }
 
+function* fetchResetInfo(action){
+  try{
+    const {id, token} = action.payload
+    const check = yield axios.get(`/api/reset/check?id=${id}&token=${token}`);
+    // TODO conditional for result of the check.
+    if (check.data.length > 0){
+      yield put({type: 'CORRECT_RESET_PASSWORD_INFO'})
+    }
+    else{
+      yield put({type: 'EXPIRED_RESET_PASSWORD_INFO'})
+    }
+  }
+  catch(error){
+    console.log('fetchResetInfo saga failed reset.saga.js', error);
+  }
+}
+
+function* resetPassword(action){
+  try{
+    yield axios.put(`/api/reset/`, action.payload);
+  }
+  catch(error){
+    console.log('sendReset saga failed reset.saga.js', error);
+  }
+}
+
 //--------------------WATCHER SAGA---------------------------//
 function* resetSaga() {
   yield takeLatest('SEND_RESET', sendReset);
   yield takeLatest('SEND_RESET_EMAIL', sendResetEmail);
+  yield takeLatest('FETCH_PASSWORD_RESET_INFO', fetchResetInfo);
+  yield takeLatest('SEND_FINAL_RESET', resetPassword);
 }
   
   export default resetSaga;
