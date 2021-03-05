@@ -49,6 +49,7 @@ function* fetchResetInfo(action){
 function* resetPassword(action){
   try{
     yield axios.put(`/api/reset/`, action.payload);
+    yield put ({ type: 'RESET_PASSWORD_SUCCESS'})
   }
   catch(error){
     console.log('sendReset saga failed reset.saga.js', error);
