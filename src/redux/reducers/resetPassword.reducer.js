@@ -5,7 +5,9 @@ const resetPassword = (state = 'loading', action) => {
         return 'expired'
     } else if (action.type === 'UNSET_RESET_PASSWORD_INFO'){
         return 'loading'
-    } else{
+    } else if (action.type === 'RESET_PASSWORD_SUCCESS'){
+        return 'success'
+    }else{
         return state;
     }
   };

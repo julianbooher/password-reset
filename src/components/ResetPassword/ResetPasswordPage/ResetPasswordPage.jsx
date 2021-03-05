@@ -49,6 +49,22 @@ export default function LoginPage() {
       {resetPasswordInfo === 'checked' &&
         <ResetPasswordForm token={token} id={userid} />
       }
+      {resetPasswordInfo === 'success' && 
+        <center>
+          <h2>Success!</h2>
+          <p>Your password has been reset, please log in with your new password. </p>
+          <Button
+            className="btn login-btn" 
+            variant= 'primary'
+            type="button"
+            onClick={() => {
+              history.push('/login');
+            }}
+          >
+            Log In
+          </Button>
+        </center>
+      }
 
       <center style={{paddingTop: '10px'}}>
         <p>Not registered?</p>
